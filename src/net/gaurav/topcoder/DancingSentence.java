@@ -1,6 +1,12 @@
 package net.gaurav.topcoder;
 
 public class DancingSentence {
+
+	static int caps[] = { 65, 90 };
+	static int small[] = { 97, 122 };
+	static int space = 32;
+	private static boolean isStart = true;
+
 	/*
 	 * Problem Link
 	 * 
@@ -44,4 +50,48 @@ public class DancingSentence {
 	 * 
 	 * "z" Returns: "Z"
 	 */
+	public static void main(String[] args) {
+		System.out.println(makeDancing("This is a dancing sentence"));
+	}
+
+	private static char[] makeDancing(String string) {
+		boolean isCaps = true;
+		char[] inpArray = string.toCharArray();
+
+		char[] oppArray = new char[inpArray.length];
+		for (int i = 0; i < inpArray.length; i++) {
+			int temp = (int) inpArray[i];
+			if (temp == space) {
+				oppArray[i] = inpArray[i];
+			} else if (isStart) {
+				isStart = false;
+				isCaps = !isCaps;
+				if (temp >= caps[0] && temp <= caps[1]) {
+					oppArray[i] = (char) (temp);
+				}
+				if (temp >= small[0] && temp <= small[1]) {
+					oppArray[i] = (char) (temp-32);
+				}
+
+			} else if (isCaps) {
+				isCaps = !isCaps;
+				if (temp >= caps[0] || temp <= caps[1]) {
+					oppArray[i] = (char) (temp - 32);
+				} else {
+					oppArray[i] = inpArray[i];
+				}
+			} else if (!isCaps) {
+				isCaps = !isCaps;
+				if (temp >= small[0] || temp <= small[1]) {
+					oppArray[i] = inpArray[i];
+				} else {
+					oppArray[i] = (char) (temp + 32);
+				}
+			}
+
+		}
+		return oppArray;
+
+	}
+
 }
